@@ -35,8 +35,9 @@ if [ "$EVENT_TYPE" = "closed" ]; then
   exit 0
 fi
 
-flyctl status --app "$app"
-is_new_app=$(if [ $? -ne 0 ] ; then echo "true" ; else echo "false" ; fi)
+exit_code=0
+flyctl status --app "$app" || exit_code=1
+is_new_app=$(if [ $exit_code -ne 0 ] ; then echo "true" ; else echo "false" ; fi)
 
 # Deploy the Fly app, creating it first if needed.
 if $is_new_app; then
