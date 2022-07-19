@@ -35,10 +35,15 @@ if [ "$EVENT_TYPE" = "closed" ]; then
   exit 0
 fi
 
+flyctl status --app "$app"
+is_new_app=$(if [ $? -ne 0 ] ; then echo "true" ; else echo "false" ; fi)
+
 # Deploy the Fly app, creating it first if needed.
-if ! flyctl status --app "$app"; then
-  flyctl launch --now --copy-config --name "$app" --image "$image" --region "$region" --org "$org"
-elif [ "$INPUT_UPDATE" != "false" ]; then
+if $is_new_app; then
+  flyctl apps create --name "$app" --org "$org"
+fi
+
+if [ $is_new_app ] || [ "$INPUT_UPDATE" != "false" ]; then
   flyctl deploy --config "$config" --app "$app" --region "$region" --image "$image" --region "$region" --strategy immediate
 fi
 
