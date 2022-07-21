@@ -42,15 +42,15 @@ is_new_app=$(if [ $exit_code -ne 0 ] ; then echo "true" ; else echo "false" ; fi
 # Deploy the Fly app, creating it first if needed.
 if $is_new_app; then
   flyctl apps create --name "$app" --org "$org"
+
+  # Attach postgres cluster to the app if specified.
+  if [ -n "$INPUT_POSTGRES" ]; then
+    flyctl postgres attach --postgres-app "$INPUT_POSTGRES" --app "$app"
+  fi
 fi
 
 if [ $is_new_app ] || [ "$INPUT_UPDATE" != "false" ]; then
   flyctl deploy --config "$config" --app "$app" --region "$region" --image "$image" --region "$region" --strategy immediate --remote-only
-fi
-
-# Attach postgres cluster to the app if specified.
-if [ -n "$INPUT_POSTGRES" ]; then
-  flyctl postgres attach --postgres-app "$INPUT_POSTGRES" --app "$app" || true
 fi
 
 # Make some info available to the GitHub workflow.
