@@ -22,6 +22,8 @@ inputs:
     description: path to a directory containing a fly.toml to clone
   postgres:
     description: Optionally attach the app to a pre-existing Postgres cluster on Fly
+  volume:
+    description: Optionally attach the app to a new volume
   update:
     description: Whether new commits to the PR should re-deploy the Fly app
     default: true

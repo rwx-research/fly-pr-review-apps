@@ -47,6 +47,11 @@ if $is_new_app; then
   if [ -n "$INPUT_POSTGRES" ]; then
     flyctl postgres attach --postgres-app "$INPUT_POSTGRES" --app "$app"
   fi
+
+  # Attach volume to the app if specified.
+  if [ -n "$INPUT_VOLUME" ]; then
+    flyctl volumes create review_app_volume --app "$app" --size "$INPUT_VOLUME" --region "$region"
+  fi
 fi
 
 if [ $is_new_app ] || [ "$INPUT_UPDATE" != "false" ]; then
