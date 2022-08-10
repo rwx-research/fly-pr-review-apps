@@ -56,7 +56,7 @@ if $is_new_app; then
 fi
 
 if [ $is_new_app ] || [ "$INPUT_UPDATE" != "false" ]; then
-  flyctl deploy --config "$config" --app "$app" --image "$image" --remote-only
+  flyctl deploy --config "$config" --app "$app" --region "$region" --remote-only
 fi
 
 # Make some info available to the GitHub workflow.
