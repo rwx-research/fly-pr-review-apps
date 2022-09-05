@@ -46,7 +46,7 @@ if $is_new_app; then
 
   # Attach postgres cluster to the app if specified.
   if [ -n "$INPUT_POSTGRES" ]; then
-    flyctl postgres attach --postgres-app "$INPUT_POSTGRES" --app "$app"
+    flyctl postgres attach "$INPUT_POSTGRES" --app "$app"
   fi
 
   # Attach volume to the app if specified.
